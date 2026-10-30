@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Xiao Mu (小小穆) — Personal Website</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f6;
+      --surface: #fff;
+      --text: #202722;
+      --muted: #667169;
+      --accent: #34785d;
+      --accent-soft: #e6f1eb;
+      --border: #e2e8e3;
+      --shadow: 0 18px 48px rgb(27 51 37 / 7%);
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #141a17;
+      --surface: #1d2621;
+      --text: #edf2ee;
+      --muted: #aab8ae;
+      --accent: #8bd0a8;
+      --accent-soft: #263c30;
+      --border: #334239;
+      --shadow: 0 18px 48px rgb(0 0 0 / 20%);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 88px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      transition: background-color .25s ease, color .25s ease;
+    }
+
+    a { color: inherit; }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 30;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 0 0 8px 0;
+      text-decoration: none;
+    }
+
+    .skip-link:focus { left: 0; }
+
+    .container {
+      width: min(1080px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      font-weight: 750;
+      text-decoration: none;
+      letter-spacing: -.04em;
+      white-space: nowrap;
+    }
+
+    .nav-actions, .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: .92rem;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 13px;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: .85rem;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover { border-color: var(--accent); }
+
+    main { overflow: hidden; }
+
+    .hero {
+      min-height: 590px;
+      display: grid;
+      align-items: center;
+      padding-block: 100px 112px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 390px;
+      height: 390px;
+      right: -90px;
+      top: 72px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-soft), transparent 68%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; max-width: 760px; }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: .82rem;
+      font-weight: 750;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin: 18px 0 20px;
+      font-size: clamp(3rem, 8vw, 5.8rem);
+      line-height: 1.03;
+      letter-spacing: -.065em;
+    }
+
+    .hero p {
+      max-width: 660px;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 2vw, 1.28rem);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 13px 19px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    [data-theme="dark"] .button { color: #142019; }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    section { padding-block: 78px; }
+
+    .section-heading { margin-bottom: 34px; }
+
+    .section-heading h2 {
+      margin: 7px 0 0;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      letter-spacing: -.045em;
+      line-height: 1.15;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 56px;
+    }
+
+    .timeline {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timeline li {
+      position: relative;
+      padding: 0 0 30px 25px;
+      border-left: 1px solid var(--border);
+    }
+
+    .timeline li:last-child { padding-bottom: 0; }
+
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 8px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px var(--bg);
+    }
+
+    .timeline time {
+      color: var(--accent);
+      font-size: .9rem;
+      font-weight: 750;
+    }
+
+    .timeline p { margin: 5px 0 0; color: var(--muted); }
+
+    .interest-panel {
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .interest-panel h3 { margin: 0 0 18px; font-size: 1.15rem; }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .chips li, .tech {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 12px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .projects-section { background: color-mix(in srgb, var(--accent-soft) 35%, var(--bg)); }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      padding: 27px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .project-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .project-card h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -.025em;
+    }
+
+    .tag {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .76rem;
+      font-weight: 750;
+    }
+
+    .tag.proposed {
+      background: #fff1d9;
+      color: #805313;
+    }
+
+    [data-theme="dark"] .tag.proposed {
+      background: #49391e;
+      color: #ffd68b;
+    }
+
+    .project-card p { color: var(--muted); margin: 8px 0 16px; }
+
+    .project-card h4 {
+      margin: 6px 0 6px;
+      font-size: .9rem;
+    }
+
+    .project-card ul {
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .project-card li + li { margin-top: 6px; }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: auto;
+      padding-top: 5px;
+    }
+
+    .tech { padding: 5px 10px; font-size: .78rem; }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-card p { margin: 5px 0 0; color: var(--muted); }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-weight: 750;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      padding: 28px 0 36px;
+      color: var(--muted);
+      font-size: .85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 720px) {
+      .container { width: min(100% - 32px, 560px); }
+      .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-block: 10px;
+        gap: 10px;
+      }
+      .nav-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 12px;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+      }
+      .nav-links a { font-size: .82rem; }
+      .brand { font-size: .92rem; }
+      .theme-toggle { padding: 8px 10px; }
+      .theme-label { display: none; }
+      .hero { min-height: 520px; padding-block: 84px; }
+      .hero::before { width: 260px; height: 260px; right: -140px; top: 30px; }
+      section { padding-block: 62px; }
+      .about-grid, .project-grid { grid-template-columns: 1fr; gap: 26px; }
+      .contact-card { align-items: flex-start; flex-direction: column; }
+      html { scroll-padding-top: 140px; }
+      .project-card { padding: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="topbar">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#home">Xiao Mu <span lang="zh">小小穆</span></a>
+      <div class="nav-actions">
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+          <span class="theme-icon" aria-hidden="true">☾</span>
+          <span class="theme-label">Dark mode</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero container" id="home" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <span class="eyebrow">Hello, I’m</span>
+        <h1 id="hero-title">Xiao Mu <span lang="zh">(小小穆)</span></h1>
+        <p>MSc student in Agentic AI Systems, passionate about building intelligent agents and applying AI to imaging &amp; creative media.</p>
+        <a class="button" href="#projects">Explore my projects <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="container" id="about" aria-labelledby="about-title">
+      <div class="section-heading">
+        <span class="eyebrow">A little about me</span>
+        <h2 id="about-title">About</h2>
+      </div>
+      <div class="about-grid">
+        <div>
+          <h3>Education</h3>
+          <ol class="timeline">
+            <li>
+              <time>2026–2027</time>
+              <p>MSc, Agentic AI Systems, The Hong Kong Polytechnic University</p>
+            </li>
+            <li>
+              <time>2020–2024</time>
+              <p>BEng, Intelligent Imaging Engineering, Communication University of China (CUC)</p>
+            </li>
+          </ol>
+        </div>
+        <aside class="interest-panel" aria-labelledby="interests-title">
+          <h3 id="interests-title">Interests</h3>
+          <ul class="chips">
+            <li>AI Agents</li>
+            <li>Computer Vision</li>
+            <li>Creative Coding</li>
+            <li>Gaming</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="projects-section" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Selected work</span>
+          <h2 id="projects-title">Projects</h2>
+        </div>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-top">
+              <h3>Tang Poetry GPT</h3>
+              <span class="tag">Coursework</span>
+            </div>
+            <p class="project-purpose"><strong>Overview:</strong> A conversational AI assistant that helps users learn Tang poetry by explaining verses, introducing poets and historical context, searching by theme, and attempting imitation.</p>
+            <h4>My role &amp; contributions</h4>
+            <ul>
+              <li><strong>Built:</strong> A Tang-poetry knowledge base of poems, annotations, and poet biographies, retrieved with RAG.</li>
+              <li><strong>Designed:</strong> The system prompt and few-shot examples to standardize analysis and imitation formats.</li>
+              <li><strong>Evaluated:</strong> Answer accuracy and stylistic consistency.</li>
+            </ul>
+            <div class="tech-list" aria-label="Technologies">
+              <span class="tech">LLM</span>
+              <span class="tech">RAG</span>
+              <span class="tech">Prompt Engineering</span>
+              <span class="tech">Python</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-top">
+              <h3>VisionAgent</h3>
+              <span class="tag proposed">Proposed</span>
+            </div>
+            <p class="project-purpose"><strong>Overview:</strong> A proposed project to analyze photos and video frames, produce structured descriptions, recognize objects and scenes, and support stylized editing instructions.</p>
+            <h4>My role &amp; contributions (planned)</h4>
+            <ul>
+              <li><strong>Built:</strong> Planned tool calls for object detection, image captioning, and stylization.</li>
+              <li><strong>Designed:</strong> A planned multi-step agent workflow.</li>
+              <li><strong>Evaluated:</strong> Planned multimodal input handling.</li>
+            </ul>
+            <div class="tech-list" aria-label="Technologies">
+              <span class="tech">Multimodal LLM</span>
+              <span class="tech">Computer Vision</span>
+              <span class="tech">Tool/Function Calling</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="contact" aria-labelledby="contact-title">
+      <div class="section-heading">
+        <span class="eyebrow">Get in touch</span>
+        <h2 id="contact-title">Contact</h2>
+      </div>
+      <div class="contact-card">
+        <div>
+          <h3>GitHub</h3>
+          <p>Find me on GitHub.</p>
+        </div>
+        <a class="contact-link" href="https://github.com/Litmu-xxm" target="_blank" rel="noopener noreferrer">
+          github.com/Litmu-xxm <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">Xiao Mu (小小穆)</div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector(".theme-toggle");
+    const icon = document.querySelector(".theme-icon");
+    const label = document.querySelector(".theme-label");
+    const savedTheme = localStorage.getItem("theme");
+    const preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    function setTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      const isDark = theme === "dark";
+      toggle.setAttribute("aria-pressed", String(isDark));
+      toggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+      icon.textContent = isDark ? "☀" : "☾";
+      label.textContent = isDark ? "Light mode" : "Dark mode";
+    }
+
+    setTheme(savedTheme || (preferredDark ? "dark" : "light"));
+
+    toggle.addEventListener("click", () => {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      setTheme(nextTheme);
+      localStorage.setItem("theme", nextTheme);
+    });
+  </script>
+</body>
+</html>
